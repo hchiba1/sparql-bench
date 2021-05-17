@@ -1,0 +1,2 @@
+"SPARQL Tutorial"	
+"The Semantic Web"	"23"

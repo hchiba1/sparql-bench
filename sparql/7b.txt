@@ -1,0 +1,2 @@
+"SPARQL Query Language Tutorial"	"Alice"
+"SPARQL Protocol Tutorial"	"Bob"
