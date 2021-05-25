@@ -1,2 +1,2 @@
-"Alice"		<http://work.example.org/alice/>
 "Bob"	<mailto:bob@work.example>	
+"Alice"		<http://work.example.org/alice/>

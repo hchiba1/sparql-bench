@@ -1,4 +1,4 @@
-	"SPARQL (updated)"
-	"SPARQL Protocol Tutorial"
-"SPARQL Query Language Tutorial"	
 "SPARQL"	
+"SPARQL Query Language Tutorial"	
+	"SPARQL Protocol Tutorial"
+	"SPARQL (updated)"

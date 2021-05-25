@@ -1,0 +1,2 @@
+"Peter Goodguy"	<mailto:peter@example.org>
+"Johnny Lee Outlaw"	<mailto:jlow@example.com>

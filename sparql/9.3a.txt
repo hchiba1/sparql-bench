@@ -1,0 +1,2 @@
+<http://example/order>	<http://example/z2>	5
+<http://example/order>	<http://example/z1>	5

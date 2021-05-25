@@ -1,2 +1,2 @@
-"b0"	"Bob"
-"b1"	"Alice"
+_:b0	"Bob"
+_:b1	"Alice"
