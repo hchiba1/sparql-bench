@@ -1,0 +1,17 @@
+{ "head": {
+    "vars": [ "nameX" , "nameY" , "nickY" ]
+  } ,
+  "results": {
+    "bindings": [
+      { 
+        "nameX": { "type": "literal" , "value": "Alice" } ,
+        "nameY": { "type": "literal" , "value": "Clare" } ,
+        "nickY": { "type": "literal" , "value": "CT" }
+      } ,
+      { 
+        "nameX": { "type": "literal" , "value": "Alice" } ,
+        "nameY": { "type": "literal" , "value": "Bob" }
+      }
+    ]
+  }
+}

@@ -1,0 +1,2 @@
+"SPARQL Tutorial"	33.6
+"The Semantic Web"	17.25

@@ -1,0 +1,2 @@
+<http://people.example/carol>	"C. Baz"
+<http://people.example/bob>	"B. Bar"
