@@ -1,1 +1,1 @@
-# sparql-test
+# sparql-bench
