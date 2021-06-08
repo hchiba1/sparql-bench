@@ -64,6 +64,7 @@ do
   cp $arg ./data/spang/
   QUERIES="$QUERIES /data/`basename $arg`"
 done
+docker-compose down
 echo;
 echo $(yellow Start to initialize database...)
 docker-compose up -d db
