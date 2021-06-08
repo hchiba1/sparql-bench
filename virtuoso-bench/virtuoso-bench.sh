@@ -52,6 +52,8 @@ done
 shift $((OPTIND - 1))
 
 rm -rf ./data/virtuoso/*
+mkdir -p ./data/spang/
+mkdir -p ./data/virtuoso/
 
 cp $SRC ./data/virtuoso/
 SRC=`basename $SRC`
@@ -64,7 +66,7 @@ do
 done
 echo;
 echo $(yellow Start to initialize database...)
-VIRTUOSO_IMAGE_TAG=$VIRTUOSO_IMAGE_TAG docker-compose up -d db
+docker-compose up -d db
 try "echo \"DB.DBA.TTLP_MT(file_to_string_output('/usr/local/virtuoso-opensource/var/lib/virtuoso/db/$SRC'), '', 'http://example.com/example.ttl', 0);\" | docker-compose exec -T db isql-v 1111 dba dba" 10
 echo;
 echo $(yellow Start test...)
