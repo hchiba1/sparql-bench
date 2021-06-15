@@ -9,8 +9,8 @@ services:
     volumes:
       - ./data/virtuoso:/data
 
-  spang-test:
-    image: "hchiba1/spang"
+  spang:
+    image: "hchiba1/spang:2.1.0"
     depends_on:
       - "db"
     volumes:

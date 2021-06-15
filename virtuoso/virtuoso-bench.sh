@@ -71,6 +71,9 @@ docker-compose up -d db
 try "echo \"DB.DBA.TTLP_MT(file_to_string_output('/usr/local/virtuoso-opensource/var/lib/virtuoso/db/$SRC'), '', 'http://example.com/example.ttl', 0);\" | docker-compose exec -T db isql-v 1111 dba dba" 10
 echo;
 echo $(yellow Start test...)
-docker-compose run spang-test spang-test -e http://db:8890/sparql $QUERIES
+docker-compose run spang spang-bench -e http://db:8890/sparql $QUERIES
+echo;
+echo $(yellow Remove containers...)
+docker-compose down
 echo;
 echo $(yellow Done!)
