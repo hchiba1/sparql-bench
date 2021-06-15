@@ -1,0 +1,7 @@
+PREFIX taxid: <http://identifiers.org/taxonomy/>
+
+SELECT *
+FROM <http://ddbj.nig.ac.jp/ontologies/taxonomy/>
+WHERE {
+  taxid:9606 ?p ?o .
+}

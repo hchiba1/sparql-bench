@@ -7,7 +7,7 @@ services:
       SPARQL_UPDATE: "true"
       DEFAULT_GRAPH: "http://www.example.com/my-graph"
     volumes:
-      - ./data/virtuoso:/data
+      - ${VIRTUOSO_DATA_DIR}:/data
 
   spang:
     image: "hchiba1/spang:2.1.0"

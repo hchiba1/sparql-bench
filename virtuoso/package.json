@@ -1,0 +1,25 @@
+{
+  "name": "virtuoso-bench",
+  "version": "1.0.0",
+  "description": "",
+  "main": "virtuoso-bench.js",
+  "engines": {
+    "node": ">=14.8.0"
+  },
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sparqling/sparql-bench.git"
+  },
+  "author": "Hirokazu Chiba",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sparqling/sparql-bench/issues"
+  },
+  "homepage": "https://github.com/sparqling/sparql-bench#readme",
+  "dependencies": {
+    "commander": "^7.2.0",
+    "ls": "^0.2.1",
+    "zx": "^1.14.1"
+  }
+}
