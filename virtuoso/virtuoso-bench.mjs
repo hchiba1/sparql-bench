@@ -69,7 +69,7 @@ for(let testCase of testCases) {
       }
     }
     coloredLog(YELLOW, `Benchmarking by spang-bench...`);
-    let result = await $`docker-compose run spang spang-bench -e http://db:8890/sparql ${queryNames} 2> /dev/null`;
+    let result = await $`SPANG_DATA_DIR=${spangDir} docker-compose run spang spang-bench -e http://db:8890/sparql ${queryNames} 2> /dev/null`;
     coloredLog(GREEN, result);
     coloredLog(YELLOW, `Removing container...`);
     await $`docker-compose down`;

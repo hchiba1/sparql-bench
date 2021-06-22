@@ -16,4 +16,4 @@ services:
     depends_on:
       - "db"
     volumes:
-      - ./data/spang:/data 
+      - ${SPANG_DATA_DIR:-./data/spang}:/data 
