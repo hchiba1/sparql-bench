@@ -27,7 +27,7 @@ async function tryUntilSucceed(command, trialNum) {
   }
 }
 
-commander.arguments('[JSON]').parse(process.argv);
+commander.option('-v,--verbose', 'Show detailed logs of execution', false).arguments('[JSON]').parse(process.argv);
 
 if(commander.args.length < 1)
   commander.help();
@@ -35,17 +35,23 @@ let spangDir = path.resolve(ls('./data/spang/')[0].full);
 
 let jsonPath = commander.args[1];
 
+$.verbose = commander.opts.verbose;
+
 let testCases = JSON.parse(await $`cat ${jsonPath}`);
+
+coloredLog(GREEN, `Loaded test cases: ${JSON.stringify(testCases, null, 2)}`);
 
 process.chdir(path.dirname(jsonPath));
 
-
 for(let testCase of testCases) {
+  coloredLog(YELLOW, `Started to benchmark test case ${JSON.stringify(testCase)}`);
   let data = ls(testCase.data);
   if(data.length == 1) {
     let dir = path.dirname(data[0].full);
     let fileName = path.basename(data[0].full);
+    coloredLog(YELLOW, `Creating Container...`);
     await $`SRC_DATA_DIR=${dir} docker-compose up -d db`;
+    coloredLog(YELLOW, `Loading data...`);
     await tryUntilSucceed(`echo "DB.DBA.TTLP_MT(file_to_string_output('/usr/local/virtuoso-opensource/var/lib/virtuoso/db/${fileName}'), '', 'http://example.com/example.ttl', 0);" | docker-compose exec -T db isql-v 1111 dba dba`, 10);
     let testQueries = Array.isArray(testCase.query) ? testCase.query : [testCase.query];
     let queryNames = [];
@@ -56,7 +62,10 @@ for(let testCase of testCases) {
         queryNames.push('/data/' + path.basename(eachQuery.full));
       }
     }
-    await $`docker-compose run spang spang-bench -e http://db:8890/sparql ${queryNames}`;
+    coloredLog(YELLOW, `Benchmarking by spang-bench...`);
+    let result = await $`docker-compose run spang spang-bench -e http://db:8890/sparql ${queryNames} 2> /dev/null`;
+    coloredLog(GREEN, result);
+    coloredLog(YELLOW, `Removing container...`);
     await $`docker-compose down`;
   }
 }
