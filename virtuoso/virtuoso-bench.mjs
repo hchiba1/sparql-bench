@@ -1,6 +1,7 @@
 const ls = require('ls');
 const commander = require('commander');
 const path = require('path');
+const fs = require('fs');
 
 let RED = '\x1b[31m';
 let GREEN = '\x1b[32m';
@@ -46,7 +47,10 @@ process.chdir(path.dirname(jsonPath));
 for(let testCase of testCases) {
   coloredLog(YELLOW, `Started to benchmark test case ${JSON.stringify(testCase)}`);
   let data = ls(testCase.data);
-  if(data.length == 1) {
+  if(data.length == 0) {
+    coloredLog(RED, `"${testCase.data} is not found`);
+  }
+  else if(data.length == 1) {
     let dir = path.dirname(data[0].full);
     let fileName = path.basename(data[0].full);
     coloredLog(YELLOW, `Creating Container...`);
@@ -56,9 +60,11 @@ for(let testCase of testCases) {
     let testQueries = Array.isArray(testCase.query) ? testCase.query : [testCase.query];
     let queryNames = [];
     for(let queryPath of testQueries) {
-      // TODO: execute spang-bench
       for(let eachQuery of ls(queryPath)) {
         await $`cp ${eachQuery.full} ${spangDir}`;
+        const defaultExpectedName = eachQuery.full.replace(/\.[^/.]+$/, '') + '.txt';
+        if(fs.existsSync(defaultExpectedName))
+          await $`cp ${defaultExpectedName} ${spangDir}`;
         queryNames.push('/data/' + path.basename(eachQuery.full));
       }
     }

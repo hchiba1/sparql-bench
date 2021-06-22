@@ -1,13 +1,17 @@
 [
   {
     "data": "./10000_taxonomy.ttl",
-    "query" : [
+    "query": [
       "./library/taxon_info.rq",
       "./library/common_ancestor.rq"
     ]
   },
   {
     "data": "../../sparql/10.1.ttl",
-    "query" : "../../sparql/10.1.rq"
+    "query": "../../sparql/10.1.rq"
+  },
+  {
+    "data": "../../sparql/10.2.2.ttl",
+    "query": "../../sparql/10.2.2.rq"
   }
 ]
