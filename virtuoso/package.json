@@ -6,7 +6,9 @@
   "engines": {
     "node": ">=14.8.0"
   },
-  "scripts": {},
+  "scripts": {
+    "bench": "./node_modules/zx/zx.mjs virtuoso-bench.mjs"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/sparqling/sparql-bench.git"

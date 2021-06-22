@@ -6,8 +6,10 @@ services:
     environment:
       SPARQL_UPDATE: "true"
       DEFAULT_GRAPH: "http://www.example.com/my-graph"
+      VIRT_Parameters_DirsAllowed: "., /usr/local/virtuoso-opensource/share/virtuoso/vad, /tmp/data"
     volumes:
-      - ${VIRTUOSO_DATA_DIR}:/data
+      - ./data/virtuoso:/data
+      - ${SRC_DATA_DIR:-./}:/tmp/data
 
   spang:
     image: "hchiba1/spang:2.1.0"

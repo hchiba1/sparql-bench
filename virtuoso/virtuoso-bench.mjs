@@ -45,7 +45,7 @@ for(let testCase of testCases) {
   if(data.length == 1) {
     let dir = path.dirname(data[0].full);
     let fileName = path.basename(data[0].full);
-    await $`VIRTUOSO_DATA_DIR=${dir} docker-compose up -d db`;
+    await $`SRC_DATA_DIR=${dir} docker-compose up -d db`;
     await tryUntilSucceed(`echo "DB.DBA.TTLP_MT(file_to_string_output('/usr/local/virtuoso-opensource/var/lib/virtuoso/db/${fileName}'), '', 'http://example.com/example.ttl', 0);" | docker-compose exec -T db isql-v 1111 dba dba`, 10);
     let testQueries = Array.isArray(testCase.query) ? testCase.query : [testCase.query];
     let queryNames = [];
