@@ -36,7 +36,7 @@ let spangDir = path.resolve(ls('./data/spang/')[0].full);
 
 let jsonPath = commander.args[1];
 
-$.verbose = commander.opts.verbose;
+$.verbose = commander.opts().verbose;
 
 let testCases = JSON.parse(await $`cat ${jsonPath}`);
 
