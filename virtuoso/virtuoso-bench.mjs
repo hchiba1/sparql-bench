@@ -17,12 +17,12 @@ async function tryUntilSucceed(command, trialNum) {
   let n = 0;
   while(n < trialNum) {
     try {
-      await $`command`;
+      await $([command]);
       break;
     } catch (p) {
       // do nothing
     }
-    yellow("Try again...");
+    coloredLog(YELLOW, "Try again...");
     ++n;
     await $`sleep 1`;
   }
@@ -56,7 +56,7 @@ for(let testCase of testCases) {
     coloredLog(YELLOW, `Creating Container...`);
     await $`SRC_DATA_DIR=${dir} docker-compose up -d db`;
     coloredLog(YELLOW, `Loading data...`);
-    await tryUntilSucceed(`echo "DB.DBA.TTLP_MT(file_to_string_output('/usr/local/virtuoso-opensource/var/lib/virtuoso/db/${fileName}'), '', 'http://example.com/example.ttl', 0);" | docker-compose exec -T db isql-v 1111 dba dba`, 10);
+    await tryUntilSucceed(`echo "DB.DBA.TTLP_MT(file_to_string_output('/usr/local/virtuoso-opensource/var/lib/virtuoso/db/${fileName}'), '', 'http://example.com/example.ttl', 0);" | docker-compose exec -T db isql-v 1111 dba dba`, 100);
     let testQueries = Array.isArray(testCase.query) ? testCase.query : [testCase.query];
     let queryNames = [];
     for(let queryPath of testQueries) {
