@@ -1,5 +1,5 @@
 #!/usr/bin/env spang2
-# @endpoint 2.1.ttl
+# @endpoint 02.1.ttl
 
 SELECT ?title
 WHERE

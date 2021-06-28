@@ -1,5 +1,5 @@
 #!/usr/bin/env spang2
-# @endpoint 7.ttl
+# @endpoint 07.ttl
 
 PREFIX dc10:  <http://purl.org/dc/elements/1.0/>
 PREFIX dc11:  <http://purl.org/dc/elements/1.1/>

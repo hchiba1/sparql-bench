@@ -1,5 +1,5 @@
 #!/usr/bin/env spang2
-# @endpoint 8.3.3.ttl
+# @endpoint 08.3.3.ttl
 
 PREFIX : <http://example/>
 SELECT * WHERE {

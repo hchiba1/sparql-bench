@@ -1,5 +1,5 @@
 #!/usr/bin/env spang2
-# @endpoint 2.2.ttl
+# @endpoint 02.2.ttl
 
 PREFIX foaf:   <http://xmlns.com/foaf/0.1/>
 PREFIX foaf:   <http://xmlns.com/foaf/0.1/>

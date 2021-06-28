@@ -1,5 +1,5 @@
 #!/usr/bin/env spang2
-# @endpoint 2.5.ttl
+# @endpoint 02.5.ttl
 
 PREFIX foaf:   <http://xmlns.com/foaf/0.1/>
 SELECT ( CONCAT(?G, " ", ?S) AS ?name )

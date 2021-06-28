@@ -1,5 +1,5 @@
 #!/usr/bin/env spang2
-# @endpoint 3.ttl
+# @endpoint 03.ttl
 
 PREFIX  dc:  <http://purl.org/dc/elements/1.1/>
 SELECT  ?title

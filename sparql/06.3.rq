@@ -1,5 +1,5 @@
 #!/usr/bin/env spang2
-# @endpoint 6.3.ttl
+# @endpoint 06.3.ttl
 
 PREFIX foaf: <http://xmlns.com/foaf/0.1/>
 SELECT ?name ?mbox ?hpage
