@@ -10,9 +10,9 @@ services:
     volumes:
       - ./data/virtuoso:/data
       - ${SRC_DATA_DIR:-./}:/tmp/data
-
   spang:
     image: "hchiba1/spang:2.1.0"
+    stdin_open: false
     depends_on:
       - "db"
     volumes:

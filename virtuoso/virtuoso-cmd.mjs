@@ -62,10 +62,9 @@ await tryUntilSucceed(`echo "DB.DBA.TTLP_MT(file_to_string_output('/tmp/data/${s
 await $`cp ${queryPath} ${spangDir}`;
 let queryName = path.basename(queryPath);
 coloredLog(YELLOW, `Benchmarking by spang-bench...`);
-let result = await $`SPANG_DATA_DIR=${spangDir} docker-compose run --rm spang spang2`;
-//let result = await $`SPANG_DATA_DIR=${spangDir} docker-compose run spang spang2 -e http://db:8890/sparql /data/${queryName} 2> /dev/null`;
-// coloredLog(GREEN, result);
-// coloredLog(YELLOW, `Removing container...`);
-// await $`docker-compose down`;
+let result = await $`SPANG_DATA_DIR=${spangDir} docker-compose run spang spang2 -e http://db:8890/sparql /data/${queryName} 2> /dev/null`;
+coloredLog(GREEN, result);
+coloredLog(YELLOW, `Removing container...`);
+await $`docker-compose down`;
 
 coloredLog(GREEN, 'Done!');
