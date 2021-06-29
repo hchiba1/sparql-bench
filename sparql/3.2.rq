@@ -1,9 +1,0 @@
-#!/usr/bin/env spang2
-# @endpoint 3.ttl
-
-PREFIX  dc:  <http://purl.org/dc/elements/1.1/>
-PREFIX  ns:  <http://example.org/ns#>
-SELECT  ?title ?price
-WHERE   { ?x ns:price ?price .
-          FILTER (?price < 30.5)
-          ?x dc:title ?title . }

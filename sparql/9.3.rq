@@ -1,6 +1,0 @@
-#!/usr/bin/env spang2
-# @endpoint 9.3.ttl
-
-PREFIX :   <http://example/>
-SELECT * 
-{  ?s :item/:price ?x . }

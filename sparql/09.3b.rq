@@ -1,0 +1,8 @@
+#!/usr/bin/env spang2
+# @endpoint 09.3.ttl
+
+  PREFIX :   <http://example/>
+  SELECT (sum(?x) AS ?total)
+  { 
+    :order :item/:price ?x
+  }

@@ -1,0 +1,4 @@
+#!/usr/bin/env spang2
+# @endpoint 02.3.ttl
+
+SELECT ?v WHERE { ?v ?p "cat"@en }
