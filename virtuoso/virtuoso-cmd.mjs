@@ -1,3 +1,5 @@
+#!/usr/bin/env zx
+
 const ls = require('ls');
 const commander = require('commander');
 const path = require('path');
@@ -27,6 +29,9 @@ async function tryUntilSucceed(command, trialNum) {
     await $`sleep 1`;
   }
 }
+
+if(process.argv[0].endsWith('node') || process.argv[0].endsWith('zx'))
+  process.argv.shift();
 
 commander.option('-v, --verbose', 'Show detailed logs of execution', false)
   .option('-g, --graph-name [name_of_graph]', 'Name of graph to be loaded')
