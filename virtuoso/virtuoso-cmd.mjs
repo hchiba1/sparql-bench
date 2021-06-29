@@ -22,7 +22,7 @@ async function tryUntilSucceed(command, trialNum) {
     } catch (p) {
       // do nothing
     }
-    coloredLog(YELLOW, "Try again...");
+    coloredLog(YELLOW, "Database is not ready to accept request. Trying again...");
     ++n;
     await $`sleep 1`;
   }
@@ -50,12 +50,11 @@ if(!fs.existsSync(srcPath)) {
   process.exit(-1);
 }
  
- 
 $.verbose = commander.opts().verbose;
 
 let dir = path.dirname(srcPath);
 let srcName = path.basename(srcPath);
-coloredLog(YELLOW, `Creating Container...`);
+coloredLog(YELLOW, `Preparing Containers (if not started)...`);
 await $`SRC_DATA_DIR=${dir} docker-compose up -d db`;
 coloredLog(YELLOW, `Removind all existing triples...`);
 await tryUntilSucceed(`echo "DELETE FROM DB.DBA.RDF_QUAD;" | docker-compose exec -T db isql-v 1111 dba dba`, 100);
@@ -65,13 +64,12 @@ await tryUntilSucceed(`echo "DB.DBA.TTLP_MT(file_to_string_output('/tmp/data/${s
 await $`cp ${queryPath} ${spangDir}`;
 let queryName = path.basename(queryPath);
 coloredLog(YELLOW, `Benchmarking by spang-bench...`);
-let result = await $`SPANG_DATA_DIR=${spangDir} docker-compose run spang spang2 -e http://db:8890/sparql /data/${queryName} 2> /dev/null`;
+let result = await $`SPANG_DATA_DIR=${spangDir} docker-compose run spang spang2 --time -e http://db:8890/sparql /data/${queryName}`;
 coloredLog(GREEN, result);
 
 if(commander.opts().down) {
   coloredLog(YELLOW, `Make docker components down...`);
   await $`docker-compose down`;
 }
-await tryUntilSucceed(`echo "DELETE FROM DB.DBA.RDF_QUAD;" | docker-compose exec -T db isql-v 1111 dba dba`, 100);
 
 coloredLog(GREEN, 'Done!');
