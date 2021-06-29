@@ -28,16 +28,17 @@ async function tryUntilSucceed(command, trialNum) {
   }
 }
 
-commander.option('-v, --verbose', 'Show detailed logs of execution', false).
-  option('-d, --data [DATA]', 'RDF data source file to be queried').
-  arguments('[QUERY]').parse(process.argv);
+commander.option('-v, --verbose', 'Show detailed logs of execution', false)
+  .option('-g, --graph', 'Name of graph to be loaded', false)
+  .option('--down', 'Down docker components after execution', false)
+  .argument('<data>', 'RDF data to be loaded')
+  .argument('[query]', 'Query file')
+  .parse(process.argv);
 
-if(commander.args.length < 2)
-  commander.help();
 let spangDir = path.resolve(ls('./data/spang/')[0].full);
 
-let queryPath = commander.args[1];
-let srcPath = commander.opts().data;
+let srcPath = commander.args[1];
+let queryPath = commander.args[2];
 
 if(!fs.existsSync(queryPath)) {
   coloredLog(RED, `Query file ${queryPath} is not found.`);
@@ -56,6 +57,8 @@ let dir = path.dirname(srcPath);
 let srcName = path.basename(srcPath);
 coloredLog(YELLOW, `Creating Container...`);
 await $`SRC_DATA_DIR=${dir} docker-compose up -d db`;
+coloredLog(YELLOW, `Removind all existing triples...`);
+await tryUntilSucceed(`echo "DELETE FROM DB.DBA.RDF_QUAD;" | docker-compose exec -T db isql-v 1111 dba dba`, 100);
 coloredLog(YELLOW, `Loading data...`);
 await tryUntilSucceed(`echo "DB.DBA.TTLP_MT(file_to_string_output('/tmp/data/${srcName}'), '', 'http://example.com/example.ttl', 0);" | docker-compose exec -T db isql-v 1111 dba dba`, 100);
 
@@ -64,7 +67,11 @@ let queryName = path.basename(queryPath);
 coloredLog(YELLOW, `Benchmarking by spang-bench...`);
 let result = await $`SPANG_DATA_DIR=${spangDir} docker-compose run spang spang2 -e http://db:8890/sparql /data/${queryName} 2> /dev/null`;
 coloredLog(GREEN, result);
-coloredLog(YELLOW, `Removing container...`);
-await $`docker-compose down`;
+
+if(commander.opts().down) {
+  coloredLog(YELLOW, `Make docker components down...`);
+  await $`docker-compose down`;
+}
+await tryUntilSucceed(`echo "DELETE FROM DB.DBA.RDF_QUAD;" | docker-compose exec -T db isql-v 1111 dba dba`, 100);
 
 coloredLog(GREEN, 'Done!');
