@@ -29,7 +29,7 @@ async function tryUntilSucceed(command, trialNum) {
 }
 
 commander.option('-v, --verbose', 'Show detailed logs of execution', false)
-  .option('-g, --graph', 'Name of graph to be loaded', false)
+  .option('-g, --graph-name [name_of_graph]', 'Name of graph to be loaded')
   .option('--down', 'Down docker components after execution', false)
   .argument('<data>', 'RDF data to be loaded')
   .argument('[query]', 'Query file (optional)')
@@ -60,7 +60,8 @@ coloredLog(YELLOW, `Removind all existing triples...`);
 await tryUntilSucceed(`echo "DELETE FROM DB.DBA.RDF_QUAD;" | docker-compose exec -T db isql-v 1111 dba dba`, 100);
 coloredLog(YELLOW, `Loading data...`);
 $.verbose = true; // Temporary verbosity to show loading time
-await tryUntilSucceed(`echo "DB.DBA.TTLP_MT(file_to_string_output('/tmp/data/${srcName}'), '', 'http://example.com/example.ttl', 0);" | docker-compose exec -T db isql-v 1111 dba dba`, 100);
+let graphName = commander.opts().graph ?? 'http://example.com/example.ttl';
+await tryUntilSucceed(`echo "DB.DBA.TTLP_MT(file_to_string_output('/tmp/data/${srcName}'), '', '${graphName}', 0);" | docker-compose exec -T db isql-v 1111 dba dba`, 100);
 console.log(''); // Newline
 $.verbose = commander.opts().verbose; // Set verbosity again
 
