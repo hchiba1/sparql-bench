@@ -32,7 +32,7 @@ commander.option('-v, --verbose', 'Show detailed logs of execution', false)
   .option('-g, --graph', 'Name of graph to be loaded', false)
   .option('--down', 'Down docker components after execution', false)
   .argument('<data>', 'RDF data to be loaded')
-  .argument('[query]', 'Query file')
+  .argument('[query]', 'Query file (optional)')
   .parse(process.argv);
 
 let spangDir = path.resolve(ls('./data/spang/')[0].full);
@@ -40,12 +40,12 @@ let spangDir = path.resolve(ls('./data/spang/')[0].full);
 let srcPath = commander.args[1];
 let queryPath = commander.args[2];
 
-if(!fs.existsSync(queryPath)) {
+if(queryPath && !fs.existsSync(queryPath)) {
   coloredLog(RED, `Query file ${queryPath} is not found.`);
   process.exit(-1);
 }
 
-if(!fs.existsSync(srcPath)) {
+if(srcPath && !fs.existsSync(srcPath)) {
   coloredLog(RED, `Data file ${srcPath} is not found.`);
   process.exit(-1);
 }
@@ -61,14 +61,16 @@ await tryUntilSucceed(`echo "DELETE FROM DB.DBA.RDF_QUAD;" | docker-compose exec
 coloredLog(YELLOW, `Loading data...`);
 await tryUntilSucceed(`echo "DB.DBA.TTLP_MT(file_to_string_output('/tmp/data/${srcName}'), '', 'http://example.com/example.ttl', 0);" | docker-compose exec -T db isql-v 1111 dba dba`, 100);
 
-await $`cp ${queryPath} ${spangDir}`;
-let queryName = path.basename(queryPath);
-coloredLog(YELLOW, `Benchmarking by spang-bench...`);
-let result = await $`SPANG_DATA_DIR=${spangDir} docker-compose run spang spang2 --time -e http://db:8890/sparql /data/${queryName}`;
-coloredLog(GREEN, result);
+if(queryPath) {
+  await $`cp ${queryPath} ${spangDir}`;
+  let queryName = path.basename(queryPath);
+  coloredLog(YELLOW, `Benchmarking by spang-bench...`);
+  let result = await $`SPANG_DATA_DIR=${spangDir} docker-compose run spang spang2 --time -e http://db:8890/sparql /data/${queryName}`;
+  coloredLog(GREEN, result);
+}
 
 if(commander.opts().down) {
-  coloredLog(YELLOW, `Make docker components down...`);
+  coloredLog(YELLOW, `Let docker components down...`);
   await $`docker-compose down`;
 }
 
