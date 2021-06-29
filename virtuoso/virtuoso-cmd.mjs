@@ -30,20 +30,23 @@ async function tryUntilSucceed(command, trialNum) {
   }
 }
 
-if(process.argv[0].endsWith('node') || process.argv[0].endsWith('zx'))
+if(process.argv[1].endsWith('zx')) {
   process.argv.shift();
+  process.argv[0] = 'node';
+}
 
 commander.option('-v, --verbose', 'Show detailed logs of execution', false)
   .option('-g, --graph-name [name_of_graph]', 'Name of graph to be loaded')
   .option('--down', 'Down docker components after execution', false)
   .argument('<data>', 'RDF data to be loaded')
   .argument('[query]', 'Query file (optional)')
+  .showHelpAfterError()
   .parse(process.argv);
 
 let spangDir = path.resolve(ls('./data/spang/')[0].full);
 
-let srcPath = commander.args[1];
-let queryPath = commander.args[2];
+let srcPath = commander.args[0];
+let queryPath = commander.args[1];
 
 if(queryPath && !fs.existsSync(queryPath)) {
   coloredLog(RED, `Query file ${queryPath} is not found.`);
