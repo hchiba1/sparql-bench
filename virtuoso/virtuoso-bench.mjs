@@ -1,3 +1,5 @@
+#!/usr/bin/env zx
+
 const ls = require('ls');
 const commander = require('commander');
 const path = require('path');
@@ -28,13 +30,22 @@ async function tryUntilSucceed(command, trialNum) {
   }
 }
 
-commander.option('-v,--verbose', 'Show detailed logs of execution', false).arguments('[JSON]').parse(process.argv);
+if(process.argv[1].endsWith('zx')) {
+   process.argv.shift();
+   process.argv[0] = 'node';
+}
+
+
+commander.option('-v,--verbose', 'Show detailed logs of execution', false)
+         .argument('[json]', 'JSON specifying test cases')
+         .parse(process.argv);
+
 
 if(commander.args.length < 1)
   commander.help();
 let spangDir = path.resolve(ls('./data/spang/')[0].full);
 
-let jsonPath = commander.args[1];
+let jsonPath = commander.args[0];
 
 $.verbose = commander.opts().verbose;
 
