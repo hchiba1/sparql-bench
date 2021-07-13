@@ -38,6 +38,7 @@ if(process.argv[1].endsWith('zx')) {
 commander.option('-v, --verbose', 'Show detailed logs of execution', false)
   .option('-g, --graph-name [name_of_graph]', 'Name of graph to be loaded')
   .option('--down', 'Down docker components after execution', false)
+  .option('-t, --tag [docker_image_tag]', 'Specify tag of docker image', 'latest')
   .argument('<data>', 'RDF data to be loaded')
   .argument('[query]', 'Query file (optional)')
   .showHelpAfterError()
@@ -61,9 +62,24 @@ if(srcPath && !fs.existsSync(srcPath)) {
 $.verbose = commander.opts().verbose;
 
 let dir = path.dirname(srcPath);
+let tag = commander.opts().tag;
+let currentTag = null;
+try {
+  let imageLine = await $`docker image ls --no-trunc | grep  $(docker-compose images -q db)`;
+  currentTag = imageLine.stdout.split(' ').filter(elem => elem)[1];
+} catch(e) {
+  // do nothing
+}
+
 let srcName = path.basename(srcPath);
-coloredLog(YELLOW, `Preparing Containers (if not started)...`);
-await $`SRC_DATA_DIR=${dir} docker-compose up -d db`;
+if(currentTag != tag) {
+  coloredLog(YELLOW, `The tag is changed. Recreation of db is needed...`);
+  await $`rm -rf ./data/virtuoso/*`;
+  await $`VIRTUOSO_IMAGE_TAG=${tag} SRC_DATA_DIR=${dir} docker-compose up --force-recreate -d db`;
+} else {
+  coloredLog(YELLOW, `Preparing Containers (if not started)...`);
+  await $`VIRTUOSO_IMAGE_TAG=${tag} SRC_DATA_DIR=${dir} docker-compose up -d db`;
+}
 coloredLog(YELLOW, `Removind all existing triples...`);
 await tryUntilSucceed(`echo "DELETE FROM DB.DBA.RDF_QUAD;" | docker-compose exec -T db isql-v 1111 dba dba`, 100);
 coloredLog(YELLOW, `Loading data...`);
@@ -91,3 +107,4 @@ if(commander.opts().down) {
 }
 
 coloredLog(GREEN, 'Done!');
+
