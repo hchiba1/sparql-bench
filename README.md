@@ -1,1 +1,1 @@
-# sparql-bench
+# SPARQL benchmark tools
